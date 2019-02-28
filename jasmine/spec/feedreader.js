@@ -69,17 +69,6 @@ $(function() {
           */
     describe('The menu', () => {
 
-        let spy, button, event;
-
-        beforeEach(()=>{
-            event = {
-                type: 'click',
-                stopPropagation: function(){}
-            }
-            button = document.querySelector('.menu-icon-link');
-            spy = spyOn(button, 'click');
-        })
-
         it('should that ensures the menu element is hidden by default', () => {
             
             const body = document.querySelector('body');
@@ -87,13 +76,14 @@ $(function() {
         });
 
         it('should changes visibility when the menu icon is clicked', () => {
-
-
-            // button.addEventListener('click', function (e) { console.log('click')}, false);
-            // button.dispatchEvent(new Event('click'));
-            // expect(spy).toHaveBeenCalledWith(button.click);
-
-
+            
+            let body = document.querySelector('body');
+            let button = document.querySelector('.menu-icon-link');
+            
+            button.click();
+            expect(body.classList.contains('menu-hidden')).toBe(false);
+            button.click();
+            expect(body.classList.contains('menu-hidden')).toBe(true);
         });
       
     });
@@ -107,6 +97,22 @@ $(function() {
          * Remember, loadFeed() is asynchronous so this test will require
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
+    describe('Initial Entries', () => {
+
+        beforeEach((done) => {
+            loadFeed(0, () => {
+                done();
+            })
+        })
+        
+        it('should that ensures when the loadFeed', (done) => {
+            
+            let feedContainer = document.querySelector('.feed');
+            let entry = document.querySelector('.entry');
+            expect(feedContainer.contains(entry)).toBe(true);
+            done();
+        })
+    });
 
     /* TODO: Write a new test suite named "New Feed Selection" */
 
@@ -114,4 +120,25 @@ $(function() {
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+    describe('New Feed Selection', () => {
+
+        let feed1Html;
+        
+        beforeEach( async(done) => {
+            loadFeed(0, () => {
+                feedHtml1 = document.querySelector('.feed').innerHTML;
+                loadFeed(2, () => {
+                    done();
+                });
+            });
+        })
+    
+        it('should that ensures when a new feed is loaded',  (done) => {
+
+            let feedHtml2 = document.querySelector('.feed').innerHTML;
+            expect(feedHtml2).not.toBe(feedHtml1);
+            done();
+           
+        })
+    });
 }());

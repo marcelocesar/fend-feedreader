@@ -13,7 +13,7 @@ $(function() {
     * a related set of tests. This suite is all about the RSS
     * feeds definitions, the allFeeds variable in our application.
     */
-    describe('RSS Feeds', function() {
+    describe('RSS Feeds', () => {
         /* This is our first test - it tests to make sure that the
          * allFeeds variable has been defined and that it is not
          * empty. Experiment with this before you get started on
@@ -21,7 +21,7 @@ $(function() {
          * allFeeds in app.js to be an empty array and refresh the
          * page?
          */
-        it('are defined', function() {
+        it('are defined', () => {
             expect(allFeeds).toBeDefined();
             expect(allFeeds.length).not.toBe(0);
         });
@@ -31,12 +31,26 @@ $(function() {
          * in the allFeeds object and ensures it has a URL defined
          * and that the URL is not empty.
          */
+        it('should verify feed url exists and is not empty', () => {
+
+            allFeeds.forEach(feed => {
+                expect(feed.url).toBeDefined();
+                expect(feed.url).not.toBeNull();
+            })
+        });
 
 
         /* TODO: Write a test that loops through each feed
          * in the allFeeds object and ensures it has a name defined
          * and that the name is not empty.
          */
+        it('should verify feed name exists and is not empty', () => {
+
+            allFeeds.forEach(feed => {
+                expect(feed.name).toBeDefined();
+                expect(feed.name).not.toBeNull();
+            })
+        });
     });
 
 
@@ -53,6 +67,37 @@ $(function() {
           * should have two expectations: does the menu display when
           * clicked and does it hide when clicked again.
           */
+    describe('The menu', () => {
+
+        let spy, button, event;
+
+        beforeEach(()=>{
+            event = {
+                type: 'click',
+                stopPropagation: function(){}
+            }
+            button = document.querySelector('.menu-icon-link');
+            spy = spyOn(button, 'click');
+        })
+
+        it('should that ensures the menu element is hidden by default', () => {
+            
+            const body = document.querySelector('body');
+            expect(body.classList.contains('menu-hidden')).toBe(true);
+        });
+
+        it('should changes visibility when the menu icon is clicked', () => {
+
+
+            // button.addEventListener('click', function (e) { console.log('click')}, false);
+            // button.dispatchEvent(new Event('click'));
+            // expect(spy).toHaveBeenCalledWith(button.click);
+
+
+        });
+      
+    });
+    
 
     /* TODO: Write a new test suite named "Initial Entries" */
 
